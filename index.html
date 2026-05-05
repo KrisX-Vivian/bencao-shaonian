@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>寻芳益智·问道百草 —— 本草少年行</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', 'Segoe UI', Roboto, sans-serif;
+            background-color: #F7FCF4;
+            color: #2E3B2C;
+            line-height: 1.7;
+        }
+
+        /* 导航栏 */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(255, 255, 255, 0.95);
+            z-index: 1000;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: box-shadow 0.3s ease;
+        }
+
+        nav.scrolled {
+            box-shadow: 0 2px 20px rgba(31, 69, 37, 0.1);
+        }
+
+        .nav-logo {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #1F4525;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: #2E3B2C;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #6DA544;
+        }
+
+        /* 板块标题通用样式 */
+        .section-title {
+            font-size: 2rem;
+            font-weight: 650;
+            color: #1F4525;
+            padding-left: 1rem;
+            border-left: 8px solid #6DA544;
+            margin-bottom: 2rem;
+        }
+
+        /* 卡片通用样式 */
+        .card {
+            background: #FFFFFF;
+            border-radius: 1.5rem;
+            box-shadow: 0 4px 20px rgba(31, 69, 37, 0.08);
+            padding: 2rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(31, 69, 37, 0.12);
+        }
+
+        /* 图片通用样式 */
+        .img-placeholder {
+            background-color: #E2ECD5;
+            border-radius: 1rem;
+            overflow: hidden;
+        }
+
+        .img-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 1rem;
+        }
+
+        /* 按钮通用样式 */
+        .btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background-color: #1F4525;
+            color: #FFFFFF;
+            text-decoration: none;
+            border-radius: 2rem;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #2B5E37;
+            transform: translateY(-2px);
+        }
+
+        /* 板块1: Hero */
+        #hero {
+            height: 100vh;
+            background: linear-gradient(to bottom, rgba(20, 40, 20, 0.75), rgba(20, 40, 20, 0.5)),
+                        url('image/scene-forest-farm.jpg') center/cover no-repeat;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #FFFFFF;
+            padding: 2rem;
+        }
+
+        .hero-content h1 {
+            font-size: 3.2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .hero-content .subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+
+        .hero-features {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-bottom: 2.5rem;
+            flex-wrap: wrap;
+        }
+
+        .hero-feature {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .hero-feature i {
+            color: #6DA544;
+            font-size: 1.2rem;
+        }
+
+        /* 通用板块容器 */
+        section {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* 板块2: 基地背书 */
+        #about-base .base-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .base-images {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .base-images .img-placeholder {
+            aspect-ratio: 1;
+        }
+
+        .base-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 1.5rem;
+            background: #F0F5EA;
+            border-radius: 1rem;
+        }
+
+        .stat-card .number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1F4525;
+        }
+
+        .credentials-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+        }
+
+        /* 板块3: 课程体系 */
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .course-card {
+            text-align: center;
+        }
+
+        .course-card i {
+            font-size: 3rem;
+            color: #6DA544;
+            margin-bottom: 1rem;
+        }
+
+        .course-card h3 {
+            color: #1F4525;
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .course-card .grade {
+            color: #6DA544;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .course-card .keywords {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 1rem;
+        }
+
+        .course-card .footer {
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid #E2ECD5;
+            font-size: 0.9rem;
+            color: #6DA544;
+            font-weight: 600;
+        }
+
+        .course-scenes {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .course-scenes .img-placeholder {
+            aspect-ratio: 16/10;
+        }
+
+        .handbook-note {
+            background: #F0F5EA;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            text-align: center;
+        }
+
+        /* 板块4: 家长问答 */
+        .faq-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .faq-card {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .faq-card i {
+            font-size: 1.5rem;
+            color: #6DA544;
+            flex-shrink: 0;
+        }
+
+        .faq-card .question {
+            font-weight: 600;
+            color: #1F4525;
+            margin-bottom: 0.5rem;
+        }
+
+        .faq-card .answer {
+            font-size: 0.95rem;
+            color: #555;
+        }
+
+        /* 板块5: 时间轴 */
+        .timeline {
+            position: relative;
+            padding-left: 3rem;
+            margin-bottom: 4rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 1rem;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(to bottom, #6DA544, #1F4525);
+            border-radius: 2px;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2.5rem;
+            top: 0.3rem;
+            width: 16px;
+            height: 16px;
+            background: #6DA544;
+            border-radius: 50%;
+            border: 3px solid #F7FCF4;
+            transition: transform 0.3s ease;
+        }
+
+        .timeline-item:hover::before {
+            transform: scale(1.3);
+            background: #1F4525;
+        }
+
+        .timeline-time {
+            font-weight: 700;
+            color: #1F4525;
+            margin-bottom: 0.3rem;
+        }
+
+        /* 作品卡片网格 */
+        .works-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        /* 作品卡片 */
+        .work-card {
+            background: #FFFFFF;
+            border-radius: 1.5rem;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(31, 69, 37, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .work-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 30px rgba(31, 69, 37, 0.15);
+        }
+
+        /* 作品卡片图片容器 */
+        .work-card-images {
+            position: relative;
+            aspect-ratio: 1;
+            overflow: hidden;
+        }
+
+        .work-card-img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            transition: opacity 0.3s ease;
+        }
+
+        .work-card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .work-card-img-main {
+            opacity: 1;
+        }
+
+        .work-card-img-hover {
+            opacity: 0;
+        }
+
+        .work-card:hover .work-card-img-main {
+            opacity: 0;
+        }
+
+        .work-card:hover .work-card-img-hover {
+            opacity: 1;
+        }
+
+        /* 作品卡片内容 */
+        .work-card-content {
+            padding: 1.5rem;
+        }
+
+        .work-card-content h4 {
+            color: #1F4525;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .work-card-content p {
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        /* 作品卡片标签 */
+        .work-card-tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .work-card-tag {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            background: #F0F5EA;
+            color: #6DA544;
+            border-radius: 1rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        /* 板块6: 团队介绍 */
+        .team-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .team-info {
+            font-size: 1.1rem;
+        }
+
+        .team-info p {
+            margin-bottom: 1rem;
+        }
+
+        .team-info strong {
+            color: #1F4525;
+        }
+
+        .ip-preview {
+            background: #F0F5EA;
+            border: 3px dashed #6DA544;
+            border-radius: 1.5rem;
+            padding: 3rem;
+            text-align: center;
+        }
+
+        .ip-preview i {
+            font-size: 4rem;
+            color: #6DA544;
+            margin-bottom: 1rem;
+        }
+
+        .ip-preview h3 {
+            color: #1F4525;
+            margin-bottom: 0.5rem;
+        }
+
+        .ip-preview p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        /* 板块7: 底部联系 */
+        #contact {
+            background: #1A3A20;
+            color: #FFFFFF;
+            padding: 4rem 2rem;
+        }
+
+        .contact-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .contact-section h3 {
+            margin-bottom: 1.5rem;
+            color: #6DA544;
+        }
+
+        .contact-section p {
+            margin-bottom: 0.8rem;
+            opacity: 0.9;
+        }
+
+        .contact-section a {
+            color: #FFFFFF;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.8rem;
+            opacity: 0.9;
+            transition: opacity 0.3s ease;
+        }
+
+        .contact-section a:hover {
+            opacity: 1;
+        }
+
+        .qr-placeholder {
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 1024px) {
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            #about-base .base-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .courses-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .faq-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .credentials-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .works-cards-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .contact-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .team-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+
+            .hero-features {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .base-images {
+                grid-template-columns: 1fr;
+            }
+
+            .courses-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .faq-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .credentials-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .works-cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            /* 移动端作品卡片：两张图上下排列 */
+            .work-card-images {
+                position: relative;
+                aspect-ratio: auto;
+                height: auto;
+            }
+
+            .work-card-img {
+                position: relative;
+                opacity: 1 !important;
+                aspect-ratio: 1;
+            }
+
+            .work-card-img + .work-card-img {
+                border-top: 2px solid #E2ECD5;
+            }
+
+            .work-card:hover {
+                transform: none;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .course-scenes {
+                grid-template-columns: 1fr;
+            }
+
+            section {
+                padding: 3rem 1rem;
+            }
+        }
+
+        /* 滚动动画 */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav id="navbar">
+        <div class="nav-logo">🌿 本草少年行</div>
+        <div class="nav-links">
+            <a href="#courses">课程特色</a>
+            <a href="#faq">家长问答</a>
+            <a href="#timeline">一日流程</a>
+            <a href="#about-base">关于我们</a>
+            <a href="#contact">联系我们</a>
+        </div>
+    </nav>
+
+    <!-- 板块1: Hero品牌首屏 -->
+    <section id="hero">
+        <div class="hero-content fade-in">
+            <h1>寻芳益智·问道百草</h1>
+            <p class="subtitle">本草少年行 · 北京城市副中心科研级中草药研学</p>
+            <div class="hero-features">
+                <div class="hero-feature">
+                    <i class="fas fa-flask"></i>
+                    <span>北京林业大学任建武教授团队指导</span>
+                </div>
+                <div class="hero-feature">
+                    <i class="fas fa-leaf"></i>
+                    <span>1200亩中草药基地 · 真实科研场景</span>
+                </div>
+                <div class="hero-feature">
+                    <i class="fas fa-palette"></i>
+                    <span>非遗手作+实验探究 · 双倍收获</span>
+                </div>
+            </div>
+            <a href="#courses" class="btn">查看研学课程 →</a>
+        </div>
+    </section>
+
+    <!-- 板块2: 基地背书 -->
+    <section id="about-base">
+        <h2 class="section-title fade-in">不是所有研学，都有“科技小院”底色</h2>
+        <div class="base-grid fade-in">
+            <div class="base-images">
+                <div class="img-placeholder">
+                    <img src="image/scene-forest-farm.jpg" alt="于家务林场实拍全景" loading="lazy">
+                </div>
+                <div class="img-placeholder">
+                    <img src="image/scene-herbs.jpg" alt="中草药科普展示区" loading="lazy">
+                </div>
+                <div class="img-placeholder">
+                    <img src="image/scene-forest.jpg" alt="林下科普园入口标识" loading="lazy">
+                </div>
+            </div>
+            <div>
+                <p style="font-size: 1.05rem; margin-bottom: 1.5rem;">
+                    坐落于通州区于家务回族乡小海字村，于家务科技小院拥有1600亩林下经济用地、1200亩中草药种植基地，2023年获评“北京园林绿化科普基地”。黄精有效成分达药典标准2倍以上。
+                </p>
+                <div class="base-stats">
+                    <div class="stat-card">
+                        <div class="number">28次/年</div>
+                        <div>专家实地指导</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="number">1:8</div>
+                        <div>师生配比</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="credentials-grid fade-in">
+            <div class="img-placeholder">
+                <img src="image/award-certificate.jpg" alt="科技小院获奖证书" loading="lazy">
+            </div>
+            <div class="img-placeholder">
+                <img src="image/platform-screenshot.jpg" alt="全国科技小院服务管理平台截图" loading="lazy">
+            </div>
+            <div class="img-placeholder">
+                <img src="image/schools-map-1.jpg" alt="通州城区小学施教区地图" loading="lazy">
+            </div>
+            <div class="img-placeholder">
+                <img src="image/schools-map-2.jpg" alt="通州城区初中施教区地图" loading="lazy">
+            </div>
+        </div>
+    </section>
+
+    <!-- 板块3: 课程体系 -->
+    <section id="courses">
+        <h2 class="section-title fade-in">三层进阶 · 覆盖6-15岁全学段</h2>
+        <div class="courses-grid fade-in">
+            <div class="card course-card">
+                <i class="fas fa-seedling"></i>
+                <h3>林间小卫士</h3>
+                <p class="grade">小学1-3年级</p>
+                <p>自然感官发现之旅</p>
+                <p class="keywords">五感识药/动物观察/古法香囊</p>
+                <div class="footer">90%时间在动手操作</div>
+            </div>
+            <div class="card course-card">
+                <i class="fas fa-leaf"></i>
+                <h3>耕读本草</h3>
+                <p class="grade">小学4-6年级</p>
+                <p>劳动实践成长之旅</p>
+                <p class="keywords">农耕劳动/牡丹折扇/中药基础</p>
+                <div class="footer">90%时间在动手操作</div>
+            </div>
+            <div class="card course-card">
+                <i class="fas fa-microscope"></i>
+                <h3>科技林场</h3>
+                <p class="grade">初中</p>
+                <p>中医药溯源探究之旅</p>
+                <p class="keywords">标本制作/药理探究/实验数据记录</p>
+                <div class="footer">90%时间在动手操作</div>
+            </div>
+        </div>
+        <div class="course-scenes fade-in">
+            <div class="img-placeholder">
+                <img src="image/scene-shimo.jpg" alt="学生体验石磨" loading="lazy">
+            </div>
+            <div class="img-placeholder">
+                <img src="image/scene-well.jpg" alt="学生体验压水井" loading="lazy">
+            </div>
+        </div>
+        <div class="handbook-note fade-in">
+            <p><strong>配套非遗研学手册（A5彩印16-20页）：</strong>任务打卡、知识卡片、非遗步骤图解、结营证书。</p>
+        </div>
+    </section>
+
+    <!-- 板块4: 家长问答 -->
+    <section id="faq">
+        <h2 class="section-title fade-in">回应每一位家长的关心</h2>
+        <div class="faq-grid fade-in">
+            <div class="card faq-card">
+                <i class="fas fa-question-circle"></i>
+                <div>
+                    <p class="question">能学到真东西吗？</p>
+                    <p class="answer">北林教授团队设计课程，有实验数据、对标新课标</p>
+                </div>
+            </div>
+            <div class="card faq-card">
+                <i class="fas fa-hand-paper"></i>
+                <div>
+                    <p class="question">孩子能亲自动手吗？</p>
+                    <p class="answer">90%以上环节学生亲手操作</p>
+                </div>
+            </div>
+            <div class="card faq-card">
+                <i class="fas fa-gift"></i>
+                <div>
+                    <p class="question">有作品带回家吗？</p>
+                    <p class="answer">扎染方巾/古法香囊/中草药标本书签</p>
+                </div>
+            </div>
+            <div class="card faq-card">
+                <i class="fas fa-car"></i>
+                <div>
+                    <p class="question">交通方便吗？</p>
+                    <p class="answer">距通州城区25分钟，朝阳东部35分钟，停车位充足</p>
+                </div>
+            </div>
+            <div class="card faq-card">
+                <i class="fas fa-tree"></i>
+                <div>
+                    <p class="question">环境舒适吗？</p>
+                    <p class="answer">四季药香，开阔林下空间，配套设施齐全</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 板块5: 一日流程时间轴 -->
+    <section id="timeline">
+        <h2 class="section-title fade-in">孩子的一天这样度过</h2>
+        <div class="timeline fade-in">
+            <div class="timeline-item">
+                <div class="timeline-time">08:30</div>
+                <div class="timeline-content">签到集合，领取专属研学手册</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">09:00</div>
+                <div class="timeline-content">开场破冰，安全教育，今日流程介绍</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">09:20</div>
+                <div class="timeline-content">上午课程（中草药辨识 + 种植体验 / 科学实验）</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">10:30</div>
+                <div class="timeline-content">茶歇休整，宠物互动区自由活动</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">10:50</div>
+                <div class="timeline-content">非遗手工（香囊制作 / 植物拓印 / 中草药扎染）</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">11:50</div>
+                <div class="timeline-content">结营仪式：作品展示、合影、颁发结营证书</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">12:00</div>
+                <div class="timeline-content">填写满意度问卷，领取伴手礼</div>
+            </div>
+        </div>
+        <h3 style="text-align: center; color: #1F4525; margin-bottom: 2rem; font-size: 1.5rem;" class="fade-in">可以带回家的作品</h3>
+        <div class="works-cards-grid fade-in">
+            <!-- 卡片1：古法香囊 -->
+            <div class="work-card">
+                <div class="work-card-images">
+                    <div class="work-card-img work-card-img-main">
+                        <img src="image/works-xiangnang-1.jpg" alt="古法中药香囊成品展示" loading="lazy">
+                    </div>
+                    <div class="work-card-img work-card-img-hover">
+                        <img src="image/works-xiangnang-2.jpg" alt="香囊制作过程" loading="lazy">
+                    </div>
+                </div>
+                <div class="work-card-content">
+                    <h4>古法香囊</h4>
+                    <p>采自田间薄荷、艾叶、佩兰，亲手研磨缝制</p>
+                    <div class="work-card-tags">
+                        <span class="work-card-tag">#手作</span>
+                        <span class="work-card-tag">#中医药</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 卡片2：中草药扎染 -->
+            <div class="work-card">
+                <div class="work-card-images">
+                    <div class="work-card-img work-card-img-main">
+                        <img src="image/works-zaran-1.jpg" alt="中草药扎染作品展示" loading="lazy">
+                    </div>
+                    <div class="work-card-img work-card-img-hover">
+                        <img src="image/works-zaran-2.jpg" alt="扎染原料（板蓝根等药材）" loading="lazy">
+                    </div>
+                </div>
+                <div class="work-card-content">
+                    <h4>中草药扎染</h4>
+                    <p>板蓝根、栀子、茜草等天然植物染料</p>
+                    <div class="work-card-tags">
+                        <span class="work-card-tag">#非遗</span>
+                        <span class="work-card-tag">#创意</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 卡片3：标本书签 -->
+            <div class="work-card">
+                <div class="work-card-images">
+                    <div class="work-card-img work-card-img-main">
+                        <img src="image/works-biaoben-1.jpg" alt="中草药标本/压花书签" loading="lazy">
+                    </div>
+                    <div class="work-card-img work-card-img-hover">
+                        <img src="image/works-biaoben-2.jpg" alt="标本/书签作品展示" loading="lazy">
+                    </div>
+                </div>
+                <div class="work-card-content">
+                    <h4>标本书签</h4>
+                    <p>用药材叶片和花瓣制作，可长期保存</p>
+                    <div class="work-card-tags">
+                        <span class="work-card-tag">#自然美育</span>
+                        <span class="work-card-tag">#纪念</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 板块6: 团队介绍 & IP预告 -->
+    <section id="team">
+        <h2 class="section-title fade-in">三校青年，扎根田野</h2>
+        <div class="team-grid fade-in">
+            <div class="team-info">
+                <p><strong>团队：</strong>北京林业大学、北京农学院、北京农业职业学院三校联合</p>
+                <p><strong>专业：</strong>林学、中药学、园林、农学多学科交叉</p>
+                <p><strong>首席顾问：</strong>北京林业大学任建武教授</p>
+                <p><strong>能力：</strong>课程研发→活动执行→宣传推广全闭环</p>
+            </div>
+            <div>
+                <div class="ip-preview">
+                    <i class="fas fa-mortar-pestle"></i>
+                    <h3>"于小药"IP形象即将亮相</h3>
+                    <p>IP形象设计及周边产品正在制作中，敬请期待</p>
+                </div>
+                <div class="img-placeholder" style="margin-top: 2rem; aspect-ratio: 16/10;">
+                    <img src="image/scene-forest-farm.jpg" alt="于家务林场实拍全景" loading="lazy">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 板块7: 底部联系与页脚 -->
+    <section id="contact">
+        <div class="contact-container">
+            <div class="contact-grid">
+                <div class="contact-section">
+                    <h3>联系我们</h3>
+                    <p>📍 北京市通州区于家务回族乡小海字村</p>
+                    <p>📧 bencaoshaonian@example.com</p>
+                    <div class="qr-placeholder">
+                        <span>（公众号）二维码</span>
+                    </div>
+                </div>
+                <div class="contact-section">
+                    <h3>快速链接</h3>
+                    <a href="#courses">课程特色</a>
+                    <a href="#faq">家长问答</a>
+                    <a href="#timeline">一日流程</a>
+                    <a href="mailto:bencaoshaonian@example.com">预约体验</a>
+                </div>
+                <div class="contact-section">
+                    <h3>合作支持</h3>
+                    <p>指导单位：通州区委统战部、通州区科协</p>
+                    <p>科研支持：北京林业大学</p>
+                    <p>场地支持：于家务集体林场科技小院</p>
+                    <div class="img-placeholder" style="margin-top: 1.5rem; aspect-ratio: 16/10;">
+                        <img src="image/grand-canal-alliance-signing.jpg" alt="大运河研学旅游联盟签约仪式" loading="lazy" style="background: rgba(255,255,255,0.1);">
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                © 2026 寻芳益智·问道百草 —— 本草少年行 · 科研级中草药研学
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // 导航栏滚动阴影效果
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Intersection Observer 滚动动画
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // 观察所有需要动画的元素
+        document.querySelectorAll('.fade-in').forEach(function(el) {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
